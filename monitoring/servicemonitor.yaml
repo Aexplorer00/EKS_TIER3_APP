@@ -1,0 +1,14 @@
+# ServiceMonitor for Prometheus
+# TODO: Configure after Prometheus setup
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-monitor
+  namespace: eks-3tier-app
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+  - port: http
+    interval: 30s

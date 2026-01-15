@@ -1,0 +1,26 @@
+# Backend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: eks-3tier-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: lucky0066/eks3tier-backend:v4
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MY_REDIS_HOST
+          value: redis
+        - name: MY_REDIS_PORT
+          value: "6379"

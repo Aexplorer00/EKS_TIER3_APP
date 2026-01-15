@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #00d9ff, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #00d9ff;
+}
+
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.tier {
+    background: rgba(0, 217, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+.tier h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.tier p {
+    color: #94a3b8;
+}
+
+.counter-section {
+    text-align: center;
+}
+
+#counter-display {
+    margin: 20px 0;
+}
+
+#counter {
+    font-size: 4rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00ff88, #00d9ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#refresh-btn {
+    background: linear-gradient(90deg, #00d9ff, #00ff88);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #1a1a2e;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+#refresh-btn:hover {
+    transform: scale(1.05);
+}
+
+.success {
+    color: #00ff88;
+}
+
+.error {
+    color: #ff6b6b;
+}
+
+footer {
+    text-align: center;
+    color: #64748b;
+    margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    .tier-grid {
+        grid-template-columns: 1fr;
+    }
+}

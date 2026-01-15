@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKS 3-Tier App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 EKS 3-Tier Application</h1>
+            <p>A production-ready app deployed on AWS EKS</p>
+        </header>
+
+        <main>
+            <section class="status-card">
+                <h2>System Status</h2>
+                <div id="status">
+                    <p>Checking connection...</p>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Architecture</h2>
+                <div class="tier-grid">
+                    <div class="tier">
+                        <h3>🌐 Frontend</h3>
+                        <p>Nginx (This page)</p>
+                    </div>
+                    <div class="tier">
+                        <h3>⚙️ Backend</h3>
+                        <p>Flask API</p>
+                    </div>
+                    <div class="tier">
+                        <h3>💾 Database</h3>
+                        <p>Redis Cache</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="counter-section">
+                <h2>Visit Counter</h2>
+                <div id="counter-display">
+                    <span id="counter">--</span>
+                    <p>Total Visits</p>
+                </div>
+                <button id="refresh-btn">Refresh Count</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built for SRE Portfolio | Deployed on AWS EKS</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        async function getCounter() {
+            try {
+                const response = await fetch(`${API_URL}/counter`);
+                const data = await response.json();
+                document.getElementById('counter').textContent = data.count;
+                document.getElementById('status').innerHTML =
+                    '<p class="success">✅ Backend Connected</p>';
+            } catch (error) {
+                document.getElementById('status').innerHTML =
+                    '<p class="error">❌ Backend Unavailable</p>';
+                console.error('Error:', error);
+            }
+        }
+
+        async function incrementCounter() {
+            try {
+                const response = await fetch(`${API_URL}/counter`, { method: 'POST' });
+                const data = await response.json();
+                document.getElementById('counter').textContent = data.count;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Load on page load
+        window.onload = () => {
+            incrementCounter();
+        };
+
+        document.getElementById('refresh-btn').addEventListener('click', getCounter);
+    </script>
+</body>
+
+</html>
