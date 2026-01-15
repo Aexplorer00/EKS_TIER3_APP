@@ -10,6 +10,8 @@ spec:
     repoURL: https://github.com/Aexplorer00/EKS_TIER3_APP.git
     targetRevision: HEAD
     path: k8s
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: eks-3tier-app
