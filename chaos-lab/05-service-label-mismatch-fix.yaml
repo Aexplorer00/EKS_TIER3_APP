@@ -1,0 +1,15 @@
+# Lab 5 FIX: Correct the service selector to match pod labels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chaos-svc-broken
+  namespace: chaos-lab
+spec:
+  selector:
+    # FIX: Now matches the pod's actual label
+    app: my-web-app
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

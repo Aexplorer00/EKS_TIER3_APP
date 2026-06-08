@@ -1,0 +1,30 @@
+# Lab 2: ImagePullBackOff — Image name doesn't exist
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imagepull-wrong
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: imagepull
+  template:
+    metadata:
+      labels:
+        chaos: imagepull
+    spec:
+      containers:
+      - name: app
+        # BUG: This image doesn't exist on Docker Hub
+        image: nginx:v99.99-doesnotexist
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

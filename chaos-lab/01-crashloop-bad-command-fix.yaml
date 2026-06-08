@@ -1,0 +1,30 @@
+# Lab 1 FIX: Remove the bad command, let nginx start normally
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crashloop-bad-cmd
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: crashloop-cmd
+  template:
+    metadata:
+      labels:
+        chaos: crashloop-cmd
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        # FIX: Removed the bad command — nginx uses its default entrypoint
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

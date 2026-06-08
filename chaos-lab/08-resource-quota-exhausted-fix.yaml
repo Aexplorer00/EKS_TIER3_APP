@@ -1,0 +1,44 @@
+# Lab 8 FIX: Either increase the quota or reduce replicas
+---
+# Option 1: Increase the quota
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: chaos-lab-quota
+  namespace: chaos-lab
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 2Gi
+    limits.cpu: "4"
+    limits.memory: 4Gi
+    pods: "20"
+---
+# Option 2: Reduce replicas to fit within quota (applying both here)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quota-test
+  namespace: chaos-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      chaos: quota-exhaust
+  template:
+    metadata:
+      labels:
+        chaos: quota-exhaust
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

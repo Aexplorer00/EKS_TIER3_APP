@@ -1,0 +1,44 @@
+# Lab 8: Resource Quota Exhaustion — Namespace has a strict quota
+---
+# First, apply a tight ResourceQuota to the namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: chaos-lab-quota
+  namespace: chaos-lab
+spec:
+  hard:
+    requests.cpu: "200m"
+    requests.memory: 256Mi
+    limits.cpu: "400m"
+    limits.memory: 512Mi
+    pods: "5"
+---
+# Then try to deploy 10 replicas — quota will block most of them
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quota-test
+  namespace: chaos-lab
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      chaos: quota-exhaust
+  template:
+    metadata:
+      labels:
+        chaos: quota-exhaust
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

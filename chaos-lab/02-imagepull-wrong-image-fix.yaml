@@ -1,0 +1,30 @@
+# Lab 2 FIX: Use a valid image tag
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imagepull-wrong
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: imagepull
+  template:
+    metadata:
+      labels:
+        chaos: imagepull
+    spec:
+      containers:
+      - name: app
+        # FIX: Correct image tag that actually exists
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

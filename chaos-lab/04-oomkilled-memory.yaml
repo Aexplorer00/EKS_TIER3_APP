@@ -1,0 +1,31 @@
+# Lab 4: OOMKilled — Memory limit too low for a memory-hungry process
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oomkill-app
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: oomkill
+  template:
+    metadata:
+      labels:
+        chaos: oomkill
+    spec:
+      containers:
+      - name: stress
+        image: polinux/stress
+        # BUG: Trying to allocate 256MB but limit is only 50Mi
+        command: ["stress"]
+        args: ["--vm", "1", "--vm-bytes", "256M", "--vm-hang", "1"]
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            # Memory limit is way too low for what the process needs
+            memory: 50Mi

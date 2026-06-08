@@ -1,0 +1,32 @@
+# Lab 1: CrashLoopBackOff — Bad startup command
+# The container starts, runs a bad command, exits with code 1, and K8s keeps restarting it
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crashloop-bad-cmd
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: crashloop-cmd
+  template:
+    metadata:
+      labels:
+        chaos: crashloop-cmd
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        # BUG: This command doesn't exist — container exits immediately
+        command: ["/bin/sh", "-c", "cat /etc/config/app.conf"]
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

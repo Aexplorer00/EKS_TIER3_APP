@@ -1,0 +1,30 @@
+# Lab 3 FIX: Use reasonable resource requests
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pending-huge-resources
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: pending-resources
+  template:
+    metadata:
+      labels:
+        chaos: pending-resources
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          # FIX: Reasonable resource requests
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

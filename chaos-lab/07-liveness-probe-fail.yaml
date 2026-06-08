@@ -1,0 +1,44 @@
+# Lab 7: Liveness Probe Failure — Wrong health check path
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liveness-fail
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: liveness
+  template:
+    metadata:
+      labels:
+        chaos: liveness
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        # BUG: Liveness probe checks /healthz which doesn't exist in nginx
+        # nginx returns 404 → probe fails → K8s kills and restarts the container
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5

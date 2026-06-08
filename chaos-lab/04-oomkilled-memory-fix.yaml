@@ -1,0 +1,31 @@
+# Lab 4 FIX: Increase memory limit to accommodate the workload
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oomkill-app
+  namespace: chaos-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chaos: oomkill
+  template:
+    metadata:
+      labels:
+        chaos: oomkill
+    spec:
+      containers:
+      - name: stress
+        image: polinux/stress
+        # FIX: Reduced memory allocation to fit within limits
+        command: ["stress"]
+        args: ["--vm", "1", "--vm-bytes", "64M", "--vm-hang", "1"]
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            # FIX: Increased limit to accommodate the workload
+            memory: 128Mi
